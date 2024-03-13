@@ -33,7 +33,6 @@
 				<option value="profile">profile</option>
 				<option value="video.episode">video.episode</option>
 			</field>
-
 			<field type="text" name="og_sitename" label="PLG_SYSTEM_OPENGRAPH_OG_SITENAME" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
 			<field type="media" name="og_image" label="PLG_SYSTEM_OPENGRAPH_OG_IMAGE" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
 		</fieldset>
