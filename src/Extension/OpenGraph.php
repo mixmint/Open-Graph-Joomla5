@@ -23,9 +23,9 @@ BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_content/src/Mode
 final class OpenGraph extends CMSPlugin
 {
 	protected $app;
-	private $metaItemOg 	= [];
-	private $metaMenuOg		= [];
-	private $metaPluginOg 	= [];
+	private $metaItemOg = [];
+	private $metaMenuOg = [];
+	private $metaPluginOg = [];
 
 	public function onContentPrepareForm(Form $form, $data): bool
 	{
@@ -54,16 +54,16 @@ final class OpenGraph extends CMSPlugin
 
 	public function onBeforeRender()
 	{
-		$app 		= Factory::getApplication();
-		$doc 		= Factory::getDocument();
-		$input		= $app->input;
-		$id 		= $input->get('id');
-		$fbAppId 	= $this->params->get('fb_application_id');
+		$app = Factory::getApplication();
+		$doc = Factory::getDocument();
+		$input = $app->input;
+		$id = $input->get('id');
+		$fbAppId = $this->params->get('fb_application_id');
 		$twSiteName = $this->params->get('tw_site_name');
 
 		if ($app->isClient('site')) {
 			$model = $app->bootComponent($input->get('option'))->getMVCFactory()->createModel('Article', 'Site');
-			$menu  = $app->getMenu()->getActive()->getParams();
+			$menu = $app->getMenu()->getActive()->getParams();
 
 			$this->getOg('item', $model, $id);
 			$this->getOg('menu', $menu);
