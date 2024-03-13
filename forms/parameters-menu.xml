@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="params" addfieldpath="/plugins/system/helixultimate/fields">
+	<fields name="params">
 		<fieldset name="setting" label="Open Graph">
 			<field type="radio" name="metaOpenGraph" label="PLG_SYSTEM_OPENGRAPH_OG_LABEL" description="PLG_SYSTEM_OPENGRAPH_OG_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
 				<option value="1">JYES</option>
