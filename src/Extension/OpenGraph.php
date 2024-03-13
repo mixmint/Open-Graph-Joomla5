@@ -112,13 +112,13 @@ final class OpenGraph extends CMSPlugin
 			)
 		) {
 			$this->$selector = [
-				'og:title' 		 => $element->get('og_title'),
-				'og:description' => $element->get('og_description'),
-				'og:image' 		 => !empty($element->get('og_image')) ? Uri::base() . $element->get('og_image') : null,
-				'og:image:alt'	 => !empty($element->get('og_image')) ? $element->get('og_title') : null,
-				'og:type' 		 => $element->get('og_type') ?? $this->params->get('og_type'),
-				'og:sitename' 	 => $element->get('og_sitename'),
-				'og:url'		 => Uri::getInstance()->toString()
+				'og:title' 		 	=> $element->get('og_title'),
+				'og:description'	=> $element->get('og_description'),
+				'og:image' 			=> !empty($element->get('og_image')) ? Uri::base() . $element->get('og_image') : null,
+				'og:image:alt'		=> !empty($element->get('og_image')) ? $element->get('og_title') : null,
+				'og:type' 			=> $element->get('og_type') ?? $this->params->get('og_type'),
+				'og:sitename' 		=> $element->get('og_sitename'),
+				'og:url'			=> Uri::getInstance()->toString()
 			];
 
 			if ($element->get('metaTwitterCard') && !empty($element->get('og_title')) && !empty($element->get('og_image'))) {
