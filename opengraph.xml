@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.1" encoding="utf-8"?>
 <extension type="plugin" group="system" method="upgrade">
 	<name>plg_system_opengraph</name>
 	<author>Mirosław Majka</author>
@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>mix@proask.pl</authorEmail>
 	<authorUrl>proask.pl</authorUrl>
-	<version>1.0.0</version>
+	<version>1.1</version>
 	<description>PLG_SYSTEM_OPENGRAPH_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\System\OpenGraph</namespace>
 	<files>
@@ -29,6 +29,10 @@
 					<option value="0">JNO</option>
 				</field>
 				<field type="radio" name="metaTwitterCard" label="PLG_SYSTEM_OPENGRAPH_TWCARD_LABEL" description="PLG_SYSTEM_OPENGRAPH_TWCARD_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field type="radio" name="removeOtherTags" label="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_LABEL" description="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_DESC" default="1" filter="integer" class="btn-group btn-group-yesno" showon="metaOpenGraph:1[OR]metaTwitterCard:1">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
