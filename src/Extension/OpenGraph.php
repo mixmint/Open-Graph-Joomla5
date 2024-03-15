@@ -1,11 +1,11 @@
 <?php
 /**
- * @version 1.0
+ * @version 1.1
  * @package Menu and Article Open Graph parameters plugin
  * @author Mirosław Majka (mix@proask.pl)
  * @copyright Copyright 2024
  * @license GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
-**/
+ **/
 
 namespace Joomla\Plugin\System\OpenGraph\Extension;
 
@@ -23,7 +23,9 @@ BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_content/src/Mode
 final class OpenGraph extends CMSPlugin
 {
 	protected $app;
-	private $metaItemOg = [];
+	private $doc;
+	private $config;
+	private $metaArticleOg = [];
 	private $metaMenuOg = [];
 	private $metaPluginOg = [];
 
@@ -43,10 +45,11 @@ final class OpenGraph extends CMSPlugin
 		switch ($name) {
 			case 'com_menus.item':
 				$form->loadFile('parameters-menu', false);
-			break;
+				break;
+
 			case 'com_content.article':
 				$form->loadFile('parameters', false);
-			break;
+				break;
 		}
 
 		return true;
@@ -54,31 +57,31 @@ final class OpenGraph extends CMSPlugin
 
 	public function onBeforeRender()
 	{
-		$app = Factory::getApplication();
-		$doc = Factory::getDocument();
-		$input = $app->input;
-		$id = $input->get('id');
-		$fbAppId = $this->params->get('fb_application_id');
-		$twSiteName = $this->params->get('tw_site_name');
+		$this->app = Factory::getApplication();
+		$this->config = Factory::getConfig();
+		$this->doc = Factory::getDocument();
+		$id = $this->app->input->get('view') == 'article' ? $this->app->input->get('id') : null;
 
-		if ($app->isClient('site')) {
-			$model = $app->bootComponent($input->get('option'))->getMVCFactory()->createModel('Article', 'Site');
-			$menu = $app->getMenu()->getActive()->getParams();
+		if ($this->app->isClient('site')) {
+			$model = $this->app->bootComponent($this->app->input->get('option'))->getMVCFactory()->createModel('Article', 'Site');
+			$menu = $this->app->getMenu()->getActive();
 
-			$this->getOg('item', $model, $id);
+			$this->getOg('article', $model, $id);
 			$this->getOg('menu', $menu);
 			$this->getOg('plugin');
 
 			switch (true) {
-				case (!empty($this->metaMenuOg) && !empty($this->metaItemOg)) || (!empty($this->metaMenuOg) && empty($this->metaItemOg)):
+				case (!empty($this->metaMenuOg) && !empty($this->metaArticleOg)) || (!empty($this->metaMenuOg) && empty($this->metaArticleOg)):
 					$this->setMetaTags($this->metaMenuOg);
-				break;
-				case empty($this->metaMenuOg) && !empty($this->metaItemOg):
-					$this->setMetaTags($this->metaItemOg);
-				break;
-				case empty($this->metaMenuOg) && empty($this->metaItemOg):
+					break;
+
+				case empty($this->metaMenuOg) && !empty($this->metaArticleOg):
+					$this->setMetaTags($this->metaArticleOg);
+					break;
+
+				case empty($this->metaMenuOg) && empty($this->metaArticleOg):
 					$this->setMetaTags($this->metaPluginOg);
-				break;
+					break;
 			}
 		}
 	}
@@ -86,67 +89,95 @@ final class OpenGraph extends CMSPlugin
 	private function getOg(string $method, $element = null, int $id = null)
 	{
 		switch ($method) {
-			case 'item':
-				if (false == $element || null == $id || $id == 0) {
+			case 'article':
+				if (false == $element || null == $id) {
 					return;
 				}
-				$element = $element->getItem($id)->params;
-				$selector = 'metaItemOg';
-			break;
+				$selector = 'metaArticleOg';
+				$article = $element->getItem($id);
+				$element = json_decode($article->attribs, false);
+				$introtext = strtok(
+					wordwrap(
+						preg_replace('/\s+/', ' ', strip_tags($article->introtext)), 200, "...\n"
+					), "\n"
+				);
+
+				$ogTitle = ($element->og_title ?: null) ?? $article->title;
+				$ogDescription = ($element->og_description ?: null) ?? ($article->metadesc ?: null) ?? ($introtext ?: null) ?? $this->params->get('og_description');
+				break;
+
 			case 'menu':
 				$selector = 'metaMenuOg';
-			break;
+				$menuItem = $element;
+				$element = $element->getParams();
+				$ogTitle = $element->get('og_title') ?? $menuItem->title;
+				$ogDescription = $element->get('og_description') ?? ($element->get('menu-meta_description') ?: null) ?? $this->params->get('og_description');
+				break;
+
 			case 'plugin':
-				$element = $this->params;
 				$selector = 'metaPluginOg';
-			break;
+				$element = $this->params;
+				$ogTitle = $element->get('og_title') ?? $this->config->get('sitename');
+				$ogDescription = $element->get('og_description') ?? $this->config->get('MetaDesc');
+				break;
 		}
 
-		if (
-			($element->get('metaOpenGraph') || $element->get('metaTwitterCard'))
-			&& (
-				null != $element->get('og_title')
-				|| null != $element->get('og_description')
-				|| null != $element->get('og_image')
-				|| null != $element->get('og_sitename')
-			)
-		) {
+		if ($method == 'article') {
+			$metaOpenGraph = (bool) $element->metaOpenGraph;
+			$metaTwitterCard = (bool) $element->metaTwitterCard;
+			$ogImage = !empty($element->og_image) ? Uri::base() . $element->og_image : null;
+			$ogImageAlt = !empty($element->og_image) ? $ogTitle : null;
+			$ogType = $element->og_type ?? $this->params->get('og_type');
+			$ogSitename = $element->og_sitename ?? $this->params->get('og_sitename') ?? $this->config->get('sitename');
+		} else {
+			$metaOpenGraph = (bool) $element->get('metaOpenGraph');
+			$metaTwitterCard = (bool) $element->get('metaTwitterCard');
+			$ogImage = !empty($element->get('og_image')) ? Uri::base() . $element->get('og_image') : null;
+			$ogImageAlt = !empty($element->get('og_image')) ? $ogTitle : null;
+			$ogType = $element->get('og_type') ?? $this->params->get('og_type');
+			$ogSitename = $element->get('og_sitename') ?? $this->params->get('og_sitename') ?? $this->config->get('sitename');
+		}
+
+		if ($metaOpenGraph || $metaTwitterCard) {
 			$this->$selector = [
-				'og:title' => $element->get('og_title'),
-				'og:description' => $element->get('og_description'),
-				'og:image' => !empty($element->get('og_image')) ? Uri::base() . $element->get('og_image') : null,
-				'og:image:alt' => !empty($element->get('og_image')) ? $element->get('og_title') : null,
-				'og:type' => $element->get('og_type') ?? $this->params->get('og_type'),
-				'og:sitename' => $element->get('og_sitename'),
+				'og:title' => $ogTitle,
+				'og:description' => $ogDescription,
+				'og:image' => $ogImage,
+				'og:image:alt' => $ogImageAlt,
+				'og:type' => $ogType,
+				'og:sitename' => $ogSitename,
 				'og:url' => Uri::getInstance()->toString()
 			];
 
-			if ($element->get('metaTwitterCard') && !empty($element->get('og_title')) && !empty($element->get('og_image'))) {
-				$this->$selector['twitter:card'] = 'summary_large_image';
-				$this->$selector['twitter:image:alt'] = $element->get('og_title');
-			}
-
-			if ($element->get('metaOpenGraph') && !empty($this->params->get('fb_application_id'))) {
-				$this->$selector['fb:app_id'] = $this->params->get('fb_application_id');
-			}
-
-			if ($element->get('metaTwitterCard') && !empty($this->params->get('tw_site_name'))) {
+			if ($metaTwitterCard) {
+				$this->$selector['twitter:image:alt'] = null != $ogImage ? $ogImageAlt : null;
 				$this->$selector['twitter:site'] = $this->params->get('tw_site_name');
+				$this->$selector['twitter:card'] = 'summary_large_image';
+			}
+
+			if ($metaOpenGraph && !empty($this->params->get('fb_application_id'))) {
+				$this->$selector['fb:app_id'] = $this->params->get('fb_application_id');
 			}
 		}
 	}
 
-	private function setMetaTags(array $batch) {
-		$ogMeta = [];
+	private function setMetaTags(array $batch)
+	{
+		$head = $this->doc->getHeadData()['custom'];
+
+		if ($this->params->get('removeOtherTags')) {
+			$pattern = '/(<meta property=\"og\:|<meta name=\"og\:|<meta name=\"twitter\:).*?\n?.*\/>/';
+			$head = array_filter($head, fn($var) => !preg_match($pattern, $var));
+		}
 
 		foreach ($batch as $key => $value) {
 			if (null != $value) {
-				$ogMeta[] = '<meta ' . (str_starts_with($key,'twitter') ? 'name' : 'property') . '="' . $key . '" content="' . $value . '" />';
+				$head[] = '<meta ' . (str_starts_with($key,'twitter') ? 'name' : 'property') . '="' . $key . '" content="' . $value . '" />';
 			}
 		}
 
-		if (!empty($ogMeta)) {
-			Factory::getDocument()->setHeadData(['custom' => $ogMeta]);
+		if (!empty($head)) {
+			$this->doc->setHeadData(['custom' => $head]);
 		}
 	}
 }
