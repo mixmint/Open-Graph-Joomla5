@@ -10,14 +10,6 @@
 
 \defined('_JEXEC') or die;
 
-// use Joomla\CMS\Extension\PluginInterface;
-// use Joomla\CMS\Plugin\PluginHelper;
-// use Joomla\Database\DatabaseInterface;
-// use Joomla\DI\Container;
-// use Joomla\DI\ServiceProviderInterface;
-// use Joomla\Event\DispatcherInterface;
-
-
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
