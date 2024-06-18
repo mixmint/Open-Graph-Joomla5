@@ -125,14 +125,14 @@ final class OpenGraph extends CMSPlugin
 		if ($method == 'article') {
 			$metaOpenGraph = (bool) $element->metaOpenGraph;
 			$metaTwitterCard = (bool) $element->metaTwitterCard;
-			$ogImage = !empty($element->og_image) ? Uri::base() . $element->og_image : null;
+			$ogImage = !empty($element->og_image) ? Uri::base() . explode('#', $element->og_image)[0] : null;
 			$ogImageAlt = !empty($element->og_image) ? $ogTitle : null;
 			$ogType = $element->og_type ?? $this->params->get('og_type');
 			$ogSitename = $element->og_sitename ?? $this->params->get('og_sitename') ?? $this->config->get('sitename');
 		} else {
 			$metaOpenGraph = (bool) $element->get('metaOpenGraph');
 			$metaTwitterCard = (bool) $element->get('metaTwitterCard');
-			$ogImage = !empty($element->get('og_image')) ? Uri::base() . $element->get('og_image') : null;
+			$ogImage = !empty($element->get('og_image')) ? Uri::base() . explode('#', $element->get('og_image'))[0] : null;
 			$ogImageAlt = !empty($element->get('og_image')) ? $ogTitle : null;
 			$ogType = $element->get('og_type') ?? $this->params->get('og_type');
 			$ogSitename = $element->get('og_sitename') ?? $this->params->get('og_sitename') ?? $this->config->get('sitename');
