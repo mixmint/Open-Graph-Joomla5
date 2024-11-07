@@ -176,7 +176,12 @@ final class OpenGraph extends CMSPlugin
 
         foreach ($batch as $key => $value) {
             if (null != $value) {
-                $head[] = '<meta ' . (str_starts_with($key,'twitter') ? 'name' : 'property') . '="' . $key . '" content="' . $value . '" />';
+                $head[] = sprintf(
+                    '<meta %s="%s" content="%s" />'
+                    (str_starts_with($key,'twitter') ? 'name' : 'property'),
+                    $key,
+                    $value
+                );
             }
         }
 
