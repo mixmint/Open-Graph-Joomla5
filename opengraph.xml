@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mix@proask.pl</authorEmail>
     <authorUrl>proask.pl</authorUrl>
-    <version>1.2</version>
+    <version>1.3</version>
     <description>PLG_SYSTEM_OPENGRAPH_DESCRIPTION</description>
     <namespace path="src">Joomla\Plugin\System\OpenGraph</namespace>
     <files>
@@ -24,27 +24,112 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field type="radio" name="metaOpenGraph" label="PLG_SYSTEM_OPENGRAPH_OG_LABEL" description="PLG_SYSTEM_OPENGRAPH_OG_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
-                    <option value="1">JYES</option>
+                <field
+                    type="radio"
+                    name="metaOpenGraph"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_OG_DESC"
+                    default="0"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    >
                     <option value="0">JNO</option>
-                </field>
-                <field type="radio" name="metaTwitterCard" label="PLG_SYSTEM_OPENGRAPH_TWCARD_LABEL" description="PLG_SYSTEM_OPENGRAPH_TWCARD_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
                     <option value="1">JYES</option>
-                    <option value="0">JNO</option>
                 </field>
-                <field type="radio" name="removeOtherTags" label="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_LABEL" description="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_DESC" default="1" filter="integer" class="btn-group" showon="metaOpenGraph:1[OR]metaTwitterCard:1">
+
+                <field
+                    type="radio"
+                    name="metaTwitterCard"
+                    label="PLG_SYSTEM_OPENGRAPH_TWCARD_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_TWCARD_DESC"
+                    default="0"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    >
+                    <option value="0">JNO</option>
                     <option value="1">JYES</option>
-                    <option value="0">JNO</option>
                 </field>
-                <field type="radio" name="hierarchy" label="PLG_SYSTEM_OPENGRAPH_HIERARCHY_LABEL" description="PLG_SYSTEM_OPENGRAPH_HIERARCHY_DESC" default="0" filter="integer" class="btn-group" showon="metaOpenGraph:1[OR]metaTwitterCard:1">
+
+                <field
+                    type="radio"
+                    name="useArticleContent"
+                    label="PLG_SYSTEM_OPENGRAPH_USE_ARTICLE_CONTENT_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_USE_ARTICLE_CONTENT_DESC"
+                    default="0"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                    >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    type="radio"
+                    name="removeOtherTags"
+                    label="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_REMOVE_OTHER_TAGS_DESC"
+                    default="1"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                    >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    type="radio"
+                    name="hierarchy"
+                    label="PLG_SYSTEM_OPENGRAPH_HIERARCHY_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_HIERARCHY_DESC"
+                    default="0"
+                    filter="integer"
+                    class="btn-group"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                    >
                     <option value="0">PLG_SYSTEM_OPENGRAPH_HIERARCHY_STANDARD</option>
                     <option value="1">PLG_SYSTEM_OPENGRAPH_HIERARCHY_ALTERNATIVE</option>
                 </field>
-                <field name="fb_application_id" type="text" default="" label="PLG_SYSTEM_OPENGRAPH_FB_APP_ID_LABEL" description="PLG_SYSTEM_OPENGRAPH_FB_APP_ID_DESC" showon="metaOpenGraph:1"/>
-                <field name="tw_site_name" type="text" default="" label="PLG_SYSTEM_OPENGRAPH_TW_SITE_NAME_LABEL" description="PLG_SYSTEM_OPENGRAPH_TW_SITE_NAME_DESC" showon="metaTwitterCard:1"/>
-                <field type="text" name="og_title" label="PLG_SYSTEM_OPENGRAPH_OG_TITLE" showon="metaOpenGraph:1[OR]metaTwitterCard:1"/>
-                <field type="textarea" name="og_description" label="PLG_SYSTEM_OPENGRAPH_OG_DESCRIPTION" showon="metaOpenGraph:1[OR]metaTwitterCard:1"/>
-                <field type="list" name="og_type" label="PLG_SYSTEM_OPENGRAPH_OG_TYPE" showon="metaOpenGraph:1[OR]metaTwitterCard:1">
+
+                <field
+                    name="fb_application_id"
+                    type="text"
+                    default=""
+                    label="PLG_SYSTEM_OPENGRAPH_FB_APP_ID_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_FB_APP_ID_DESC"
+                    showon="metaOpenGraph:1"
+                />
+
+                <field
+                    name="tw_site_name"
+                    type="text"
+                    default=""
+                    label="PLG_SYSTEM_OPENGRAPH_TW_SITE_NAME_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_TW_SITE_NAME_DESC"
+                    showon="metaTwitterCard:1"
+                />
+
+                <field
+                    type="text"
+                    name="og_title"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_TITLE"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                />
+
+                <field
+                    type="textarea"
+                    name="og_description"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_DESCRIPTION"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                />
+
+                <field
+                    type="list"
+                    name="og_type"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_TYPE"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                    >
                     <option value="website">website</option>
                     <option value="article">article</option>
                     <option value="books.author">books.author</option>
@@ -64,8 +149,20 @@
                     <option value="profile">profile</option>
                     <option value="video.episode">video.episode</option>
                 </field>
-                <field type="text" name="og_sitename" label="PLG_SYSTEM_OPENGRAPH_OG_SITENAME" showon="metaOpenGraph:1[OR]metaTwitterCard:1"/>
-                <field type="media" name="og_image" label="PLG_SYSTEM_OPENGRAPH_OG_IMAGE" showon="metaOpenGraph:1[OR]metaTwitterCard:1"/>
+
+                <field
+                    type="text"
+                    name="og_sitename"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_SITENAME"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                />
+
+                <field
+                    type="media"
+                    name="og_image"
+                    label="PLG_SYSTEM_OPENGRAPH_OG_IMAGE"
+                    showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                />
             </fieldset>
         </fields>
     </config>
