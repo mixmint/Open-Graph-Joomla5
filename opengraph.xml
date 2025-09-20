@@ -25,6 +25,14 @@
         <fields name="params">
             <fieldset name="basic">
                 <field
+                    name="note_buymeacoffee"
+                    type="note"
+                    class="my-3 w-100"
+                    label="PLG_SYSTEM_OPENGRAPH_BUYMEACOFFEE_NOTE_LABEL"
+                    description="PLG_SYSTEM_OPENGRAPH_BUYMEACOFFEE_NOTE_DESC"
+                />
+
+                <field
                     type="radio"
                     name="metaOpenGraph"
                     label="PLG_SYSTEM_OPENGRAPH_OG_LABEL"
