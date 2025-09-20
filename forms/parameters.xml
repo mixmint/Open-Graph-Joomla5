@@ -1,41 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="attribs">
-		<fieldset name="og_params" label="Open Graph">
-			<field type="radio" name="metaOpenGraph" label="PLG_SYSTEM_OPENGRAPH_OG_LABEL" description="PLG_SYSTEM_OPENGRAPH_OG_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
-				<option value="1">JYES</option>
-				<option value="0">JNO</option>
-			</field>
-			<field type="radio" name="metaTwitterCard" label="PLG_SYSTEM_OPENGRAPH_TWCARD_LABEL" description="PLG_SYSTEM_OPENGRAPH_TWCARD_DESC" default="0" filter="integer" class="btn-group btn-group-yesno">
-				<option value="1">JYES</option>
-				<option value="0">JNO</option>
-			</field>
-			<field type="text" name="og_title" label="PLG_SYSTEM_OPENGRAPH_OG_TITLE" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
-			<field type="textarea" name="og_description" label="PLG_SYSTEM_OPENGRAPH_OG_DESCRIPTION" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
-			<field type="list" name="og_type" label="PLG_SYSTEM_OPENGRAPH_OG_TYPE" showon="metaOpenGraph:1[OR]metaTwitterCard:1" >
-				<option value="">PLG_SYSTEM_OPENGRAPH_OPTION_DO_NOT_USE</option>
-				<option value="website">website</option>
-				<option value="article">article</option>
-				<option value="books.author">books.author</option>
-				<option value="books.book">books.book</option>
-				<option value="books.genre">books.genre</option>
-				<option value="business.business">business.business</option>
-				<option value="fitness.course">fitness.course</option>
-				<option value="game.achievement">game.achievement</option>
-				<option value="music.album">music.album</option>
-				<option value="music.playlist">music.playlist</option>
-				<option value="music.radio_station">music.radio_station</option>
-				<option value="music.song">music.song</option>
-				<option value="place">place</option>
-				<option value="product">product</option>
-				<option value="product.group">product.group</option>
-				<option value="product.item">product.item</option>
-				<option value="profile">profile</option>
-				<option value="video.episode">video.episode</option>
-			</field>
+    <fields name="attribs">
+        <fieldset name="og_params" label="Open Graph">
+            <field
+                type="radio"
+                name="metaOpenGraph"
+                label="PLG_SYSTEM_OPENGRAPH_OG_LABEL"
+                description="PLG_SYSTEM_OPENGRAPH_OG_DESC"
+                default="0"
+                filter="integer"
+                class="btn-group btn-group-yesno"
+                >
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
 
-			<field type="text" name="og_sitename" label="PLG_SYSTEM_OPENGRAPH_OG_SITENAME" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
-			<field type="media" name="og_image" label="PLG_SYSTEM_OPENGRAPH_OG_IMAGE" showon="metaOpenGraph:1[OR]metaTwitterCard:1" />
-		</fieldset>
-	</fields>
+            <field
+                type="radio"
+                name="metaTwitterCard"
+                label="PLG_SYSTEM_OPENGRAPH_TWCARD_LABEL"
+                description="PLG_SYSTEM_OPENGRAPH_TWCARD_DESC"
+                default="0"
+                filter="integer"
+                class="btn-group btn-group-yesno"
+                >
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+
+            <field
+                type="text"
+                name="og_title"
+                label="PLG_SYSTEM_OPENGRAPH_OG_TITLE"
+                showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+            />
+
+            <field
+                type="textarea"
+                name="og_description"
+                label="PLG_SYSTEM_OPENGRAPH_OG_DESCRIPTION"
+                showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+            />
+
+            <field
+                type="list"
+                name="og_type"
+                label="PLG_SYSTEM_OPENGRAPH_OG_TYPE"
+                showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+                >
+                <option value="">PLG_SYSTEM_OPENGRAPH_OPTION_DO_NOT_USE</option>
+                <option value="website">website</option>
+                <option value="article">article</option>
+                <option value="books.author">books.author</option>
+                <option value="books.book">books.book</option>
+                <option value="books.genre">books.genre</option>
+                <option value="business.business">business.business</option>
+                <option value="fitness.course">fitness.course</option>
+                <option value="game.achievement">game.achievement</option>
+                <option value="music.album">music.album</option>
+                <option value="music.playlist">music.playlist</option>
+                <option value="music.radio_station">music.radio_station</option>
+                <option value="music.song">music.song</option>
+                <option value="place">place</option>
+                <option value="product">product</option>
+                <option value="product.group">product.group</option>
+                <option value="product.item">product.item</option>
+                <option value="profile">profile</option>
+                <option value="video.episode">video.episode</option>
+            </field>
+
+            <field
+                type="text"
+                name="og_sitename"
+                label="PLG_SYSTEM_OPENGRAPH_OG_SITENAME"
+                showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+            />
+
+            <field
+                type="media"
+                name="og_image"
+                label="PLG_SYSTEM_OPENGRAPH_OG_IMAGE"
+                showon="metaOpenGraph:1[OR]metaTwitterCard:1"
+            />
+        </fieldset>
+    </fields>
 </form>
